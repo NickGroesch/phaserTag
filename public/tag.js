@@ -15,7 +15,12 @@ var config = {
         update: update
     }
 };
+
 var myDude;
+var dude;
+var greenDude;
+var blueDude;
+
 var platforms;
 var cursors;
 
@@ -41,14 +46,18 @@ function create() {
 
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
+    platforms.create(600, 400, 'ground').setScale(.5).refreshBody();
+    platforms.create(50, 250, 'ground').setScale(.8).refreshBody();
     platforms.create(750, 220, 'ground');
 
-    myDude = this.physics.add.sprite(100, 450, 'dude');
-
-    myDude.setBounce(0.2);
+    myDude = this.physics.add.sprite(100, 150, 'mydude');
     myDude.setCollideWorldBounds(true);
+    dude = this.physics.add.sprite(600, 450, 'dude');
+    dude.setCollideWorldBounds(true);
+    greenDude = this.physics.add.sprite(400, 450, 'greendude');
+    greenDude.setCollideWorldBounds(true);
+    blueDude = this.physics.add.sprite(100, 450, 'bluedude');
+    blueDude.setCollideWorldBounds(true);
 
     this.anims.create({
         key: 'left',
@@ -90,13 +99,11 @@ function create() {
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
         key: 'blueturn',
         frames: [{ key: 'bluedude', frame: 4 }],
         frameRate: 20
     });
-
     this.anims.create({
         key: 'blueright',
         frames: this.anims.generateFrameNumbers('bluedude', { start: 5, end: 8 }),
@@ -109,13 +116,11 @@ function create() {
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
         key: 'myturn',
         frames: [{ key: 'mydude', frame: 4 }],
         frameRate: 20
     });
-
     this.anims.create({
         key: 'myright',
         frames: this.anims.generateFrameNumbers('mydude', { start: 5, end: 8 }),
@@ -124,7 +129,12 @@ function create() {
     });
 
     this.physics.add.collider(myDude, platforms);
-    this.physics.add.overlap(myDude, stars, collectStar, null, this);
+    this.physics.add.collider(dude, platforms);
+    this.physics.add.collider(greenDude, platforms);
+    this.physics.add.collider(blueDude, platforms);
+    this.physics.add.overlap(myDude, greenDude, greenCollision, null, this);
+    this.physics.add.overlap(myDude, blueDude, blueCollision, null, this);
+    this.physics.add.overlap(myDude, dude, dudeCollision, null, this);
 
 
     cursors = this.input.keyboard.createCursorKeys();
@@ -134,28 +144,62 @@ function create() {
 function update() {
     if (cursors.left.isDown) {
         myDude.setVelocityX(-160);
-        myDude.anims.play('left', true);
+        myDude.anims.play('myleft', true);
     }
     else if (cursors.right.isDown) {
         myDude.setVelocityX(160);
-        myDude.anims.play('right', true);
+        myDude.anims.play('myright', true);
     }
     else if (cursors.up.isDown) {
         myDude.setVelocityY(-160);
-        //player.anims.play('right', true);
     }
     else if (cursors.down.isDown) {
         myDude.setVelocityY(160);
-        //player.anims.play('right', true);
     }
     else {
         myDude.setVelocityX(0);
         myDude.setVelocityY(0);
-
-        myDude.anims.play('turn');
+        myDude.anims.play('myturn');
     }
-    function tag(player, star) {
-        score += 10;
-        scoreText.setText('Score: ' + score);
+
+    randomWalk(blueDude, 80, 99)
+    randomWalk(greenDude, 120, 97)
+    randomWalk(dude, 280, 95)
+}
+function greenCollision(player, green) {
+    console.log("You got me myGuy")
+}
+function blueCollision(player, blue) {
+    console.log("Blue got you myGuy")
+}
+function dudeCollision(player, dude) {
+    console.log("Dude got you my Guy")
+}
+function randomWalk(npc, velocity, directedness) {
+
+    const change = Math.floor(Math.random() * 100)
+    if (change < directedness) {
+
+    } else {
+
+        const direction = Math.floor(Math.random() * 5)
+        switch (direction) {
+            case 0:
+                npc.setVelocityX(-velocity)
+                break;
+            case 1:
+                npc.setVelocityX(velocity)
+                break;
+            case 2:
+                npc.setVelocityY(-velocity)
+                break;
+            case 3:
+                npc.setVelocityY(velocity)
+                break;
+            case 4:
+                npc.setVelocityX(0)
+                npc.setVelocityY(0)
+                break;
+        }
     }
 }
