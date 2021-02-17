@@ -24,6 +24,13 @@ var blueDude;
 var platforms;
 var cursors;
 
+var myScore = 0;
+var pinkScore = 0;
+var blueScore = 0;
+var gameOver = false;
+var myDisp;
+var blueDisp;
+var pinkDisp;
 
 var game = new Phaser.Game(config);
 
@@ -43,7 +50,6 @@ function create() {
     this.add.image(400, 300, 'star');
 
     platforms = this.physics.add.staticGroup();
-
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
     platforms.create(600, 400, 'ground').setScale(.5).refreshBody();
@@ -128,10 +134,15 @@ function create() {
         repeat: -1
     });
 
+    myDisp = this.add.text(16, 16, 'myDude: 0', { fontSize: '32px', fill: '#000' });
+    blueDisp = this.add.text(16, 48, 'blueDudes: 0', { fontSize: '32px', fill: '#000' });
+    pinkDisp = this.add.text(18, 80, 'pinkDudes: 0', { fontSize: '32px', fill: '#000' });
+
     this.physics.add.collider(myDude, platforms);
     this.physics.add.collider(dude, platforms);
     this.physics.add.collider(greenDude, platforms);
     this.physics.add.collider(blueDude, platforms);
+
     this.physics.add.overlap(myDude, greenDude, greenCollision, null, this);
     this.physics.add.overlap(myDude, blueDude, blueCollision, null, this);
     this.physics.add.overlap(myDude, dude, dudeCollision, null, this);
@@ -162,33 +173,44 @@ function update() {
         myDude.anims.play('myturn');
     }
 
-    randomWalk(blueDude, 80, 99)
-    randomWalk(greenDude, 120, 97)
-    randomWalk(dude, 280, 95)
+    randomWalk(greenDude, 170, 97, "green")
+
+    randomWalk(blueDude, 80, 99, "blue")
+    randomWalk(dude, 280, 95, "")
 }
 function greenCollision(player, green) {
     console.log("You got me myGuy")
+    myScore += 1;
+    myDisp.setText('myDude: ' + myScore);
 }
 function blueCollision(player, blue) {
     console.log("Blue got you myGuy")
+    blueScore += 1;
+    blueDisp.setText('blueDudes: ' + blueScore);
 }
 function dudeCollision(player, dude) {
     console.log("Dude got you my Guy")
+    pinkScore += 1;
+    pinkDisp.setText('pinkDudes: ' + pinkScore);
 }
-function randomWalk(npc, velocity, directedness) {
+function randomWalk(npc, velocity, directedness, prefix) {
 
     const change = Math.floor(Math.random() * 100)
     if (change < directedness) {
 
     } else {
-
+        let key;
         const direction = Math.floor(Math.random() * 5)
         switch (direction) {
             case 0:
                 npc.setVelocityX(-velocity)
+                key = prefix + 'left'
+                npc.anims.play(key, true);
                 break;
             case 1:
                 npc.setVelocityX(velocity)
+                key = prefix + 'right'
+                npc.anims.play(key, true);
                 break;
             case 2:
                 npc.setVelocityY(-velocity)
@@ -197,6 +219,7 @@ function randomWalk(npc, velocity, directedness) {
                 npc.setVelocityY(velocity)
                 break;
             case 4:
+                npc.anims.play(prefix + 'turn')
                 npc.setVelocityX(0)
                 npc.setVelocityY(0)
                 break;
