@@ -173,31 +173,29 @@ function update() {
         myDude.anims.play('myturn');
     }
 
-    randomWalk(greenDude, 170, 97, "green")
-
-    randomWalk(blueDude, 80, 99, "blue")
-    randomWalk(dude, 280, 95, "")
+    randomWalk(greenDude, 170, 97, 'green')
+    randomWalk(blueDude, 80, 99, 'blue')
+    randomWalk(dude, 280, 95, '')
 }
+
 function greenCollision(player, green) {
-    console.log("You got me myGuy")
+    console.log('You got me myDude')
     myScore += 1;
     myDisp.setText('myDude: ' + myScore);
 }
 function blueCollision(player, blue) {
-    console.log("Blue got you myGuy")
-    blueScore += 1;
+    console.log('Blue got you myDude')
+    blueScore += 5;
     blueDisp.setText('blueDudes: ' + blueScore);
 }
 function dudeCollision(player, dude) {
-    console.log("Dude got you my Guy")
+    console.log('Dude got you myDude')
     pinkScore += 1;
     pinkDisp.setText('pinkDudes: ' + pinkScore);
 }
 function randomWalk(npc, velocity, directedness, prefix) {
-
-    const change = Math.floor(Math.random() * 100)
+    const change = Math.floor(Math.random() * 100)//this behavior seems pretty logarithmic, might need another digit precision
     if (change < directedness) {
-
     } else {
         let key;
         const direction = Math.floor(Math.random() * 5)

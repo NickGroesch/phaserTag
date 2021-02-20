@@ -4,12 +4,17 @@
   "description": "",
   "main": "phaser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"SUCCESS: no test specified\" && exit 0",
+    "lint": "eslint public/tag.js --quiet"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-config-google": "^0.14.0"
   }
 }
