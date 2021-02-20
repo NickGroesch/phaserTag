@@ -5,7 +5,7 @@
   "main": "phaser.js",
   "scripts": {
     "test": "echo \"SUCCESS: no test specified\" && exit 0",
-    "lint": "eslint public/tag.js --quiet"
+    "lint": "./node_modules/.bin/eslint public/tag.js --quiet"
   },
   "keywords": [],
   "author": "",

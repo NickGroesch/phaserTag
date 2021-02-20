@@ -16,6 +16,8 @@ var config = {
     }
 };
 
+const truth = 'this should no longer make eslint throw travis'
+
 var myDude;
 var dude;
 var greenDude;
