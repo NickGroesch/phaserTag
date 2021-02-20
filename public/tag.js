@@ -16,7 +16,7 @@ var config = {
     }
 };
 
-const truth = "this should make eslint throw travis"
+const truth = 'this should no longer make eslint throw travis'
 
 var myDude;
 var dude;
